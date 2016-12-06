@@ -1,0 +1,92 @@
+    <button type="button" class="close" ng-click="cancel();">
+        <i class="fa fa-times-circle-o" style="margin:10px;color:blue;"></i>
+    </button>
+    <div class="modal-header">
+        <h3 class="modal-title">{{title}}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="product_form" class="form-horizontal" role="form" novalidate>
+            <form-element label="NAME" mod="product">
+                <input type="text" class="form-control" name="name" placeholder="NAME" ng-model="product.productname" focus required/>
+            </form-element>
+			
+			<form-element label="SKU" mod="product">
+                <input type="text" name="sku" class="form-control" placeholder="SKU" ng-model="product.sku" required/>
+                <small class="errorMessage" ng-show="product_form.sku.$dirty && product_form.sku.$invalid"> Enter the SKU.</small>
+            </form-element>
+			
+			<form-element label="PRODUCT TYPE" mod="product">
+                <input type="text" name="producttypeid" class="form-control" placeholder="PRODUCT TYPE" ng-model="product.producttypeid" required disabled/>               
+				<select class="form-control" ng-model="product.producttypeid" ng-options="obj.producttypeid as obj.producttypeid for obj in producttypes">
+				  <option value="">-- Select --</option>
+				</select>
+				<small class="errorMessage" ng-show="product_form.producttypeid.$dirty && product_form.producttypeid.$invalid"> Enter the product type id.</small>
+            </form-element>
+
+            <form-element label="DESCRIPTION" mod="product">
+				<textarea class="form-control" name="description" placeholder="DESCRIPTION" ng-model="product.description">{{product.description}}</textarea>
+            </form-element>
+			
+            <form-element label="PRICE" mod="product">
+                <input type="text" name="price" class="form-control" placeholder="PRICE" ng-model="product.price"  only-numbers required/>
+                <small class="errorMessage" ng-show="product_form.price.$dirty && product_form.price.$invalid"> Enter the price.</small>
+            </form-element>
+
+			<form-element label="STOCK" mod="product">
+                <input type="text" name="stock" class="form-control" placeholder="STOCK" ng-model="product.stock" only-numbers required/>
+                <small class="errorMessage" ng-show="product_form.stock.$dirty && product_form.stock.$invalid"> Enter the available stock.</small>
+            </form-element>
+			
+			<form-element label="COLOR" mod="product">
+                <input type="text" name="color" class="form-control" placeholder="COLOR" ng-model="product.color" replace="[^a-zA-Z]" with=""/>
+                <small class="errorMessage" ng-show="product_form.color.$dirty && product_form.color.$invalid"> Enter the Color.</small>
+            </form-element>
+
+            <form-element label="CALORIES" mod="product">
+                <input type="text" name="cal" class="form-control" placeholder="CALORIES" ng-model="product.cal" only-numbers/>
+                <small class="errorMessage" ng-show="product_form.cal.$dirty && product_form.cal.$invalid"> Enter the Calorie content.</small>
+            </form-element>
+			
+			<form-element label="CARTENOID" mod="product">
+                <input type="text" name="carot" class="form-control" placeholder="CARTENOID" ng-model="product.carot" only-numbers/>
+                <small class="errorMessage" ng-show="product_form.carot.$dirty && product_form.carot.$invalid"> Enter the Cartenoid content.</small>
+            </form-element>
+			
+			<form-element label="FIBER" mod="product">
+                <input type="text" name="fiber" class="form-control" placeholder="FIBER" ng-model="product.fiber" only-numbers/>
+                <small class="errorMessage" ng-show="product_form.fiber.$dirty && product_form.fiber.$invalid"> Enter the Fiber content.</small>
+            </form-element>
+			
+			<form-element label="FOLATE" mod="product">
+                <input type="text" name="folate" class="form-control" placeholder="FOLATE" ng-model="product.folate" only-numbers/>
+                <small class="errorMessage" ng-show="product_form.folate.$dirty && product_form.folate.$invalid"> Enter the Folate content.</small>
+            </form-element>
+			
+			<form-element label="VITAMIN C" mod="product">
+                <input type="text" name="itc" class="form-control" placeholder="VITAMIN C" ng-model="product.itc" only-numbers/>
+                <small class="errorMessage" ng-show="product_form.itc.$dirty && product_form.itc.$invalid"> Enter the Vitamin C content.</small>
+            </form-element>
+			
+			<form-element label="POTASSIUM" mod="product">
+                <input type="text" name="potassium" class="form-control" placeholder="POTASSIUM" ng-model="product.potassium" only-numbers/>
+                <small class="errorMessage" ng-show="product_form.potassium.$dirty && product_form.potassium.$invalid"> Enter the Potassium content.</small>
+            </form-element>
+
+            <div class="space"></div>
+            <div class="space-4"></div>
+            <div class="modal-footer">
+                <form-element label="">
+                    <div class="text-right">
+                        <a class="btn btn-sm" ng-click="cancel()"><i class="ace-icon fa fa-reply"></i>Cancel</a>
+                        <button ng-click="saveProduct(product);"
+                                ng-disabled="product_form.$invalid || enableUpdate"
+                                class="btn btn-sm btn-primary"
+                                type="submit">
+                            <i class="ace-icon fa fa-check"></i>{{buttonText}}
+                        </button>
+                    </div>
+                </form-element>
+            </div>
+        </form>
+    </div>
+

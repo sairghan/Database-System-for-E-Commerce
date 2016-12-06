@@ -1,0 +1,58 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div ng-controller="authCtrl" class="container-fluid">
+	<div class="navbar-header">
+	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	  </button>
+	  <a class="navbar-brand" href="default.html#/viewprofile">Welcome {{name}}</a>
+	</div>
+	<div id="navbar" class="navbar-collapse collapse">
+	  <ul class="nav navbar-nav navbar-right">
+		<li><a href="default.html#/store" title="Store"> Home </a></li>
+		<li><a href="default.html#/viewprofile" title="View Profile"> View Profile </a></li>
+		<li><a href="default.html#/vieworders" title="View Previous Orders"> View Past Orders </a></li>
+		<li><a ng-click="logout();"> Logout</a></li>
+	  </ul>
+	</div>
+  </div>
+</nav>
+
+<h4 class="blog-post-title">Orders</h4>
+<hr/>
+
+<div class="table-responsive">
+<div class="panel panel-primary">
+  <div class="panel-heading">Your Orders
+      <div class="sw-search" >
+            <div class="nav-search" id="nav-search">
+                    Filter: <span class="input-icon">
+                        <input placeholder="Filter orders list ..." class="nav-search-input" ng-model="filterOrders" ng-change="resetLimit();"  autocomplete="off" type="text" style="width:300px;" focus>
+                        <i class="search-icon fa fa-search nav-search-icon"></i>
+                    </span>
+            </div>
+        </div>
+    </div>
+<div class="panel-body">
+	<table class="table table-striped">
+	<tr ng-show="orders.length==0"><td style="vertical-align:middle;"><i class="fa fa-ban fa-3x"></i>&nbsp;No data found</td></tr>
+	<tr ng-hide="orders.length>-1"><td style="vertical-align:middle;"><i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td></tr>
+	
+	<tr><th ng-repeat="c in oColumns">{{c.text}}</th></tr>
+
+	<tr ng-repeat="o in orders | filter:filterOrders | orderBy:'dateordered'" id="{{o.orderid}}"  ng-animate="'animate'">
+		<td><a ng-click="getOrderDetails(o)"><b>{{o.orderid}}</b></a></td>
+		<td>{{o.custid}}</td>		
+		<td>{{o.total}}</td>
+		<td>{{o.dateordered}}</td>
+		<td>
+			<button class="btn" ng-class="{Approved:'btn-success', NotApproved:''}[o.status]">{{o.status}}</button>
+		</td>
+	</tr>
+	</table>
+</div>
+</div>
+</div>
+              

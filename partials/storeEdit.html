@@ -1,0 +1,81 @@
+    <button type="button" class="close" ng-click="cancel();">
+        <i class="fa fa-times-circle-o" style="margin:10px;color:blue;"></i>
+    </button>
+    <div class="modal-header">
+        <h3 class="modal-title">{{title}}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="store_form" class="form-horizontal" role="form" novalidate>
+            <form-element label="Storeid" mod="store">
+                <input type="text" class="form-control" name="storeid" placeholder="Storeid" ng-model="store.storeid" ng-disabled = "true" focus/>
+            </form-element>
+			
+			<form-element label="NoOfSalesPerson" mod="store">
+                <input type="text" name="numsalespersons" class="form-control" placeholder="Number Sales Person" ng-model="store.numsalespersons" required/>             
+            </form-element>
+			
+			<form-element label="Product Type" mod="store">
+                <input type="text" name="producttype" class="form-control" placeholder="Product Type" ng-model="store.producttype" only-numbers required disabled/>
+				<select class="form-control" ng-model="store.producttype" ng-options="obj.producttypeid as obj.producttypeid for obj in producttypes">
+				  <option value="">-- Select --</option>
+				</select>				
+            </form-element>
+
+            <form-element label="Region" mod="store">
+				<input type="text" name="regionid" class="form-control" placeholder="Region" ng-model="store.regionid" only-numbers required disabled/>
+				<select class="form-control" ng-model="store.regionid" ng-options="obj.regionid as obj.regionid for obj in regionids">
+				  <option value="">-- Select --</option>
+				</select>
+            </form-element>
+			
+            <form-element label="BuildingNo" mod="store">
+                <input type="text" name="bldgnumber" class="form-control" placeholder="Building No" ng-model="store.bldgnumber" required/>                
+            </form-element>
+
+			<form-element label="Street" mod="store">
+                <input type="text" name="street" class="form-control" placeholder="Street" ng-model="store.street"  required/>         
+            </form-element>
+			
+			<form-element label="City" mod="store">          
+				<input type="text" class="form-control" name="country" placeholder="Country" ng-model="store.country" disabled/>
+				<select class="form-control" ng-model="store.country" ng-options="obj.country as obj.country for obj in countries" ng-change="getCountryStates(store)">
+				  <option value="">-- Select Country --</option>
+				</select>
+            </form-element>
+
+            <form-element label="State" mod="store">            
+				<input type="text" class="form-control" name="state" placeholder="State" ng-model="store.state" disabled/>
+				<select class="form-control" ng-model="store.state" ng-options="obj.state as obj.state for obj in states" ng-change="getStateCities(store)">
+				  <option value="">-- Select State --</option>
+				</select>
+            </form-element>
+			
+			<form-element label="Country" mod="store">
+                <input type="text" class="form-control" name="city" placeholder="City" ng-model="store.city" disabled/>
+				<select class="form-control" ng-model="store.city" ng-options="obj.city as obj.city for obj in cities">
+				  <option value="">-- Select City --</option>
+				</select>
+            </form-element>
+			
+			<form-element label="PostalCode" mod="store">
+                <input type="text" name="postalcode" class="form-control" placeholder="Postal Code" ng-model="store.postalcode" only-numbers required/>              
+            </form-element>
+			
+            <div class="space"></div>
+            <div class="space-4"></div>
+            <div class="modal-footer">
+                <form-element label="">
+                    <div class="text-right">
+                        <a class="btn btn-sm" ng-click="cancel()"><i class="ace-icon fa fa-reply"></i>Cancel</a>
+                        <button ng-click="saveStore(store);"
+                                ng-disabled="store_form.$invalid || enableUpdate"
+                                class="btn btn-sm btn-primary"
+                                type="submit">
+                            <i class="ace-icon fa fa-check"></i>{{buttonText}}
+                        </button>
+                    </div>
+                </form-element>
+            </div>
+        </form>
+    </div>
+

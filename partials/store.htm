@@ -1,0 +1,94 @@
+﻿<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div ng-controller="authCtrl" class="container-fluid">
+	<div class="navbar-header">
+	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	  </button>
+	  <a class="navbar-brand" href="default.html#/viewprofile">Welcome {{name}}</a>
+	</div>
+	<div id="navbar" class="navbar-collapse collapse">
+	  <ul class="nav navbar-nav navbar-right">
+		<li><a href="default.html#/store" title="Store"> Home </a></li>
+		<li><a href="default.html#/viewprofile" title="View Profile" ng-hide="customer.custtype == 2"> View Profile </a></li>
+		<li><a href="default.html#/viewbusinessprofile" title="View Profile" ng-hide="customer.custtype == 1"> View Profile </a></li>
+		<li><a href="default.html#/vieworders" title="View Previous Orders"> View Past Orders </a></li>
+		<li><a ng-click="logout();"> Logout</a></li>
+	  </ul>
+	</div>
+  </div>
+</nav>
+<p class="text-info">
+    Welcome to YourBasket.com. Your online grocery store<br /> 
+    Please select the products you want and add them to your shopping cart.<br />
+    When you are done, click the shopping cart icon to review your order and check out. 
+</p>
+
+
+<p>
+    Search: <input ng-model="search">
+	Order by: <!--
+	<select ng-model="orderList">
+    <option value="price" selected>Cheapest First</option>
+    <option value="-price">Costliest First</option>
+    <option value="stock">Stock</option>
+	</select> -->
+	<select ng-init="orderList = options[0].value" ng-model="orderList" ng-options="obj.value as obj.name for obj in orderBySel"></select>
+</p>
+<div class="panel panel-primary">
+<table class="table table-striped  table-bordered">
+    <tr class="well">
+        <td class="tdRight" colspan="5" >
+            <a href="default.html#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                <i class="icon-shopping-cart" />
+                <b>{{cart.getTotalCount()}}</b> items, <b>{{cart.getTotalPrice() | currency}}</b>
+            </a>
+        </td>
+    </tr>
+	<tr class="well">
+        <td class="tdCenter"><b>Item Image</b></td>
+        <td>
+            <b>Description (Click for more details)</b>
+        </td>
+		<td>
+            <b>Stock Left(in kg)</b>
+        </td>
+        <td class="tdRight">
+            <b>Price</b>
+        </td>
+        <td class="tdCenter">
+            <b>Click to Add</b>
+        </td>
+    </tr>
+	
+    <tr ng-repeat="product in products | orderBy:orderList | filter:search" >
+        <td class="tdCenter"><img ng-src="img/products/{{product.sku}}.jpg" alt="{{product.productname}}" /></td>
+        <td>
+            <a href="#/products/{{product.sku}}"><b>{{product.productname}}</b></a><br />
+            {{product.description}}
+        </td>
+		<td>
+            {{product.stock}} kg
+        </td>
+        <td class="tdRight">
+            {{product.price | currency}}
+        </td>
+        <td class="tdCenter">
+            <button class="btn btn-success fa fa-plus-square" ng-click="product.stock = product.stock - 1;cart.addItem(product.sku, product.productname, product.price, 1, customer.custid, product.producttypeid)" 
+			ng-disabled="product.stock <= 0">
+                add to cart {{customer.custid}}
+            </button>
+        </td>
+    </tr>
+    <tr class="well">
+        <td class="tdRight" colspan="5">
+            <a href="default.html#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                <i class="icon-shopping-cart" />
+                <b>{{cart.getTotalCount()}}</b> items, <b>{{cart.getTotalPrice() | currency}}</b>
+            </a>
+        </td>
+    </tr>
+</table>
+</div>

@@ -1,0 +1,201 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+	<div class="navbar-header">
+	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	  </button>
+	  <a class="navbar-brand" href="default.html#/viewprofile">Welcome {{name}}</a>
+	</div>
+	<div id="navbar" class="navbar-collapse collapse">
+	  <ul class="nav navbar-nav navbar-right">
+		<li><a href="default.html#/store" title="Store"> Home </a></li>
+		<li><a href="default.html#/viewprofile" title="View Profile"> View Profile </a></li>
+		<li><a href="default.html#/vieworders" title="View Previous Orders"> View Past Orders </a></li>
+		<li><a ng-click="logout();"> Logout</a></li>
+	  </ul>
+	</div>
+  </div>
+</nav>
+<div class="container-fluid">
+  <div class="row">
+	<div class="col-md-3">
+	<div class="panel panel-info">
+		<div class="row placeholders">
+		  <div class="col-md-12 placeholder">
+			  <img src="img/user.png" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+			  <h2><b>{{customer.name}}</b></h2>
+			  <h3><b>Gender: {{customer.sex}}</b></h3>
+			  <h3><b>Married: {{customer.married}}</b></h3>
+			  <h3><b>Income: {{customer.income}}</b></h3>
+			</div>
+			<ul class="pager">
+			  <li>
+				<a href="https://www.facebook.com/lijurobin.george" title="Social Facebook" class="animated rotateIn"><i class="fa fa-facebook"></i></a>
+			  </li>
+
+			  <li>
+				<a href="#" title="Social Twitter" class="animated rotateIn"><i class="fa fa-twitter"></i></a>
+			  </li>
+
+			  <li>
+				<a href="https://www.linkedin.com/in/liju-george-56b86816" title="Social Linkedin" class="animated rotateIn"><i class="fa fa-linkedin"></i></a>
+			  </li>
+			</ul>
+			<div>
+				<article class="media">
+				  <div>
+					<span class="fa fa-phone bg-primary text-primary animated rotateIn"></span>
+				  </div>
+				  <div class="media-body animated fadeInRight"><b>{{customer.phone}}</b></div>
+				</article>
+			</div>
+			<div>
+				<article class="media">
+				  <div>
+					<span class="fa fa-envelope bg-primary text-primary animated rotateIn"></span>
+				  </div>
+				  <div class="media-body animated fadeInRight"><b>{{customer.email}}</b></div>
+				</article>
+			</div>
+			<div>
+				<article class="media">
+				  <div>
+					<span class="fa fa-map-marker bg-primary text-primary animated rotateIn"></span>
+				  </div>
+				  <div class="media-body animated fadeInRight"><b>{{customer.bldgnumber}} {{customer.street}} {{customer.city}}</b></div>
+				</article>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="col-md-9 main">
+	<div class="page-content">
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-sm-6 col-sm-offset-1">
+            <div id="login-box" class="login-box visible widget-box no-border">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <h4 class="header blue lighter bigger">
+                            This is your Profile!!!
+                        </h4>
+                        <br/>
+                        <form name="signupForm" class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label no-padding-right" for="email">Email</label>
+                                <div class="col-sm-7">
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="email" class="form-control" placeholder="Email" name="email" ng-model="customer.email" ng-pattern='/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/' focus required/>
+                                        <span ng-show="signupForm.email.$error.pattern && signupForm.email.$invalid" class="help-inline">Email is not valid</span>  
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label no-padding-right" for="password">Password</label>
+                                <div class="col-sm-7">
+								<span class="block input-icon input-icon-right">
+									<input type="password" class="form-control" name = "password" placeholder="Password" ng-model="customer.password" required/>
+									<small class="errorMessage" data-ng-show="signupForm.password.$dirty && signupForm.password.$invalid"> Enter Password.</small>
+								</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label no-padding-right" for="password2">Confirm Password</label>
+                                <div class="col-sm-7">
+                                    <span class="block input-icon input-icon-right">
+                                <input type="password" class="form-control" name="password2" placeholder="Password Again" ng-model="customer.password2" password-match="customer.password" required/>                                
+                                <small class="errorMessage" data-ng-show="signupForm.password2.$dirty && signupForm.password2.$error.required"> Enter password again.</small>
+
+                               <small class="errorMessage" data-ng-show="signupForm.password2.$dirty && signupForm.password2.$error.passwordNoMatch && !signupForm.password2.$error.required"> Password do not match.</small>
+
+                            </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label no-padding-right" for="name">Name</label>
+                                <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                <input type="text" class="form-control" placeholder="Name" ng-model="customer.name" required/>
+								</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label no-padding-right" for="phone">Phone</label>
+                                <div class="col-sm-7">
+                                    <span class="block input-icon input-icon-right">
+                                 <input type="text" class="form-control" placeholder="Phone" name="phone" ng-model="customer.phone" ng-pattern="/^\+?\d{2}[- ]?\d{3}[- ]?\d{5}$/" required/>
+								<span ng-show="signupForm.phone.$error.pattern" class="help-inline">Phone number is not in valid format(e.g. +91-636-78658)</span> 
+                            </span>
+                                </div>
+                            </div>
+							<div class="form-group">
+                                <label class="col-sm-5 control-label no-padding-right" for="address">Address Line 1</label>
+                                <div class="col-sm-4">
+								<span class="block input-icon input-icon-right">
+                                <input type="text" class="form-control" placeholder="Street" ng-model="customer.street" required/>
+								</span>
+								</div>
+								<div class="col-sm-3">
+								<span class="block input-icon input-icon-right">
+                                <input type="text" class="form-control" placeholder="Apt/Bldg" ng-model="customer.bldgnumber" required/>
+								</span>
+								</div>
+                            </div>
+							<div class="form-group">
+                                <label class="col-sm-5 control-label no-padding-right" for="address">Address Line 2</label>
+                                <div class="col-sm-3">
+								<span class="block input-icon input-icon-right">
+								<input type="text" class="form-control" placeholder="country" ng-model="customer.country" disabled/>
+                                <select class="form-control" ng-model="customer.country" ng-options="obj.country as obj.country for obj in countries" ng-change="getCountryStates(customer)">
+								  <option value="">-- Select Country --</option>
+								</select>
+								</span>
+								</div>
+								<div class="col-sm-4">
+								<span class="block input-icon input-icon-right">
+								<input type="text" class="form-control" placeholder="state" ng-model="customer.state" disabled/>
+                                <select class="form-control" ng-model="customer.state" ng-options="obj.state as obj.state for obj in states" ng-change="getStateCities(customer)">
+								  <option value="">-- Select State --</option>
+								</select>
+								</span>
+								</div>
+                            </div>
+							<div class="form-group">
+                                <label class="col-sm-5 control-label no-padding-right" for="address">Address Line 3</label>
+                                <div class="col-sm-4">
+								<span class="block input-icon input-icon-right">
+                                <input type="text" class="form-control" placeholder="city" ng-model="customer.city" disabled/>
+								<select class="form-control" ng-model="customer.city" ng-options="obj.city as obj.city for obj in cities">
+								  <option value="">-- Select City --</option>
+								</select>
+								</span>
+								</div>
+								<div class="col-sm-3">
+								<span class="block input-icon input-icon-right">
+                                <input type="text" class="form-control" placeholder="zip" ng-model="customer.postalcode" required/>
+								</span>
+								</div>
+                            </div>
+							<div class="form-group">
+                                <span class="lbl col-sm-5"> </span>
+                                <div class="col-sm-7">
+                                    <button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="updateProfile(customer)" data-ng-disabled="signupForm.$invalid">
+                                        Update
+                                    </button>
+                                </div>
+                            </div>							
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+	</div>
+		   
+	</div>
+	</div>
+  </div>

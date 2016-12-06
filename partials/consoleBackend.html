@@ -1,0 +1,284 @@
+<div class="container-fluid">
+        <div class="row-fluid">
+            
+            <div class="panel with-nav-tabs panel-default" id="line-and-bubble">
+				<div class="panel-heading">
+					<ul id="bar-time-range" class="nav nav-tabs nav-justified">
+						<li class="active"><a href="#Inventory" data-toggle="tab">Inventory</a></li>
+						<li><a href="#Orders" data-toggle="tab" ng-hide="prodlogin.logintypeid == 2">Orders</a></li>
+						<li><a href="#Reports" data-toggle="tab" ng-hide="prodlogin.logintypeid == 2">Reports</a></li>
+						<li><a href="#Admin" data-toggle="tab" ng-show="prodlogin.logintypeid == 4">Admin Console</a></li>
+					</ul>
+				</div>
+				<div class="panel-body">
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="Inventory">
+										<h4 class="blog-post-title">Products</h4>
+										<hr/>
+										<button type="button" class="btn btn-danger fa fa-plus" ng-click="open(product);">&nbsp;Add New Product</button>
+
+										<div class="table-responsive">
+										<div class="panel panel-primary">
+										  <div class="panel-heading">List of products
+											  <div class="sw-search" >
+													<div class="nav-search" id="nav-search">
+															Filter: <span class="input-icon">
+																<input placeholder="Filter products list ..." class="nav-search-input" ng-model="filterProduct" ng-change="resetLimit();"  autocomplete="on" type="text" style="width:300px;" focus>
+																<i class="search-icon fa fa-search nav-search-icon"></i>
+															</span>
+													</div>
+												</div>
+											</div>
+										  <div class="panel-body">
+											<table class="table table-striped">
+											<tr ng-show="products.length==0"><td style="vertical-align:middle;"><i class="fa fa-ban fa-3x"></i>&nbsp;No data found</td></tr>
+											<tr ng-hide="products.length>-1"><td style="vertical-align:middle;"><i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td></tr>
+											
+											<tr><th ng-repeat="c in columns">{{c.text}}</th></tr>
+
+											<tr ng-repeat="c in products | filter:filterProduct | orderBy:'-productid'" id="{{c.productid}}" animate-on-change='c.stock + c.price + c.description' ng-animate="'animate'">
+												<td>{{c.productid}}</td><td>{{c.producttypeid}}</td><td>{{c.productname}}</td><td>{{c.sku}}</td><td>{{c.price}}</td><td>{{c.stock}}</td><td>{{c.description}}</td>
+												<td>{{c.cal}}</td>
+												<td>{{c.carot}}</td>
+												<td>{{c.fiber}}</td>
+												<td>{{c.folate}}</td>
+												<td>{{c.potassium}}</td>
+												<td>{{c.itc}}</td>
+												<td>
+													<button class="btn" ng-class="{Active:'btn-success', Inactive:''}[c.status]" ng-click="changeProductStatus(c);">{{c.status}}</button>
+												</td>
+												<td style="width:100px">
+													<div class="btn-group">
+													  <button type="button" class="btn btn-default fa fa-edit" ng-click="open(c);"></button>
+													  <button type="button" class="btn btn-danger fa fa-trash-o" ng-click="deleteProduct(c);"></button>
+													</div>
+												</td>
+											</tr>
+											</table>
+										</div>
+										</div>
+										</div>
+						</div>
+
+						<div class="tab-pane fade" id="Orders">
+							<h4 class="blog-post-title">Orders</h4>
+										<hr/>
+										<div class="table-responsive">
+										<div class="panel panel-primary">
+										  <div class="panel-heading">List of Orders Not Approved for this Store
+											  <div class="sw-search" >
+													<div class="nav-search" id="nav-search">
+															Filter: <span class="input-icon">
+																<input placeholder="Filter orders list ..." class="nav-search-input" ng-model="filterOrders" ng-change="resetLimit();"  autocomplete="on" type="text" style="width:300px;" focus>
+																<i class="search-icon fa fa-search nav-search-icon"></i>
+															</span>
+													</div>
+												</div>
+											</div>
+										<div class="panel-body">
+											<table class="table table-striped">
+											<tr ng-show="orders.length==0"><td style="vertical-align:middle;"><i class="fa fa-ban fa-3x"></i>&nbsp;No data found</td></tr>
+											<tr ng-hide="orders.length>-1"><td style="vertical-align:middle;"><i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td></tr>
+											
+											<tr><th ng-repeat="c in oColumns">{{c.text}}</th></tr>
+
+											<tr ng-repeat="o in orders | filter:filterOrders | orderBy:'dateordered'" id="{{o.orderid}}"  ng-animate="'animate'">
+												<td>{{o.orderid}}</td>
+												<td>{{o.custid}}</td>		
+												<td>{{o.total}}</td>
+												<td>{{o.dateordered}}</td>
+												<td>
+													<button class="btn" ng-class="{Approved:'btn-success', NotApproved:''}[o.status]" ng-click="changeOrderStatus(o);">{{o.status}}</button>
+												</td>
+											</tr>
+											</table>
+										</div>
+										</div>
+										</div>
+										
+										<div class="table-responsive">
+										<div class="panel panel-primary">
+										  <div class="panel-heading">List of Orders Approved for this Store
+											  <div class="sw-search" >
+													<div class="nav-search" id="nav-search">
+															Filter: <span class="input-icon">
+																<input placeholder="Filter orders list ..." class="nav-search-input" ng-model="filterAppOrders" ng-change="resetLimit();"  autocomplete="on" type="text" style="width:300px;" focus>
+																<i class="search-icon fa fa-search nav-search-icon"></i>
+															</span>
+													</div>
+												</div>
+											</div>
+										<div class="panel-body">
+											<table class="table table-striped">
+											<tr ng-show="orders.length==0"><td style="vertical-align:middle;"><i class="fa fa-ban fa-3x"></i>&nbsp;No data found</td></tr>
+											<tr ng-hide="orders.length>-1"><td style="vertical-align:middle;"><i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td></tr>
+											
+											<tr><th ng-repeat="c in oColumns">{{c.text}}</th><th>Approved By<th></tr>
+
+											<tr ng-repeat="o in ordersApp | filter:filterAppOrders | orderBy:'dateordered'" id="{{o.orderid}}"  ng-animate="'animate'">
+												<td>{{o.orderid}}</td>
+												<td>{{o.custid}}</td>		
+												<td>{{o.total}}</td>
+												<td>{{o.dateordered}}</td>
+												<td>
+													<button class="btn" ng-class="{Approved:'btn-success', NotApproved:''}[o.status]" >{{o.status}}</button>
+												</td>
+												<td>{{o.approvedby}}</td>
+											</tr>
+											</table>
+										</div>
+										</div>
+										</div>
+							
+						</div>
+						<div class="tab-pane fade" id="Reports">
+							
+							<table class="table table-striped">
+								<tr>
+									<td ng-repeat="sales in totsales">
+										<h3>Total Sales</h3>
+										{{sales.totalsales}}
+									</td>
+									<td ng-repeat="orders in totorders">
+										<h3>Total Orders</h3>
+										{{orders.totorders}}
+									</td>
+									<td ng-repeat="avg in avgqnty">
+										<h3>Average Quantity per Order</h3>
+										{{avg.avgqnty}}
+									</td>
+									<td>
+										<h3>Products Most Sold</h3>
+										<p ng-repeat="prod in maxprods">
+										{{prod.productname}}
+										</p>
+									</td>
+									<td>
+										<h3>Products Least Sold</h3>
+										<p ng-repeat="prod in minprods">
+										{{prod.productname}}
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<td ng-repeat="cust in mvcust">
+										<h3>Most Valuable Customer</h3>
+										<p><b>Name:</b> {{cust.name}}<p>
+										<p><b>Customer Type:</b> {{cust.customertype}}<p>
+									</td>
+									<td ng-repeat="cust in mvindcust">
+										<h3>Most Valuable Individual Customer</h3>
+										<p><b>Name:</b> {{cust.name}}<p>
+									</td>
+									<td ng-repeat="cust in mvbuscust">
+										<h3>Most Valuable Business Customer</h3>
+										<p><b>Name:</b> {{cust.name}}<p>
+									</td>
+								</tr>
+							</table>
+							<button type="button" class="btn btn-danger fa fa-plus" ng-click="openStore(store);">&nbsp;Add New Store</button>
+							<div class="table-responsive">
+										<div class="panel panel-primary">
+										  <div class="panel-heading">List of Stores
+											  <div class="sw-search" >
+													<div class="nav-search" id="nav-search">
+															Filter: <span class="input-icon">
+																<input placeholder="Filter store list ..." class="nav-search-input" ng-model="filterStores" ng-change="resetLimit();"  autocomplete="on" type="text" style="width:300px;" focus>
+																<i class="search-icon fa fa-search nav-search-icon"></i>
+															</span>
+													</div>
+												</div>
+											</div>
+										  <div class="panel-body">
+											<table class="table table-striped">
+											<tr ng-show="stores.length==0"><td style="vertical-align:middle;"><i class="fa fa-ban fa-3x"></i>&nbsp;No data found</td></tr>
+											<tr ng-hide="stores.length>-1"><td style="vertical-align:middle;"><i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td></tr>
+											
+											<tr><th ng-repeat="sc in sColumns">{{sc.text}}</th></tr>
+
+											<tr ng-repeat="s in stores | filter:filterStores | orderBy:'storeid'" id="{{s.storeid}}"  ng-animate="'animate'">
+												<td>{{s.storeid}}</td>
+												<td>{{s.numsalespersons}}</td>													
+												<td>{{s.producttype}}</td>
+												<td>{{s.regionid}}</td>
+												<td>{{s.bldgnumber}}</td>
+												<td>{{s.street}}</td>
+												<td>{{s.city}}</td>
+												<td>{{s.state}}</td>
+												<td>{{s.country}}</td>
+												<td>{{s.postalcode}}</td>														
+												<td style="width:100px">
+													<div class="btn-group">
+													  <button type="button" class="btn btn-default fa fa-edit" ng-click="openStore(s);"></button>
+													  <button type="button" class="btn btn-danger fa fa-trash-o" ng-click="deleteStore(s);"></button>
+													</div>
+												</td>
+											</tr>
+											</table>
+										</div>
+										</div>
+							</div>
+							
+						</div>
+						<div class="tab-pane fade" id="Admin">
+							<h4 class="blog-post-title">Admin Console</h4>
+										<hr/>
+										<div class="table-responsive">
+										<div class="panel panel-primary">
+											<div class="panel-heading">Add Product Type</div>
+											<div class="panel-body">
+												<form name="producttypeForm" class="form-horizontal" role="form">
+													<div class="form-group">
+														<label class="col-md-2 control-label no-padding-right" for="email">Product Type</label>
+														<div class="col-md-5">
+															<span class="block input-icon input-icon-right">
+																<input type="text" class="form-control" placeholder="Product Type" name="producttype" ng-model="admin.producttype"  focus required replace="[^a-zA-Z]" with=""/>
+																<span ng-show="signupForm.producttype.$invalid" class="help-inline">Product type is not valid</span> 
+															</span>
+														</div>
+													</div>
+													
+													<div class="form-group">
+													<span class="lbl col-sm-2"> </span>
+													<div class="col-sm-5">
+														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="addProdType(admin)" data-ng-disabled="producttypeForm.$invalid">
+															Add Product Type
+														</button>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+										<div class="panel panel-primary">
+											<div class="panel-heading">Add Customer Type</div>
+											<div class="panel-body">
+												<form name="customertypeForm" class="form-horizontal" role="form">
+													<div class="form-group">
+														<label class="col-md-2 control-label no-padding-right" for="email">Customer Type</label>
+														<div class="col-md-5">
+															<span class="block input-icon input-icon-right">
+																<input type="text" class="form-control" placeholder="Customer Type" name="customertype" ng-model="admin.customertype"  focus required replace="[^a-zA-Z]" with=""/>
+																<span ng-show="signupForm.customertype.$invalid" class="help-inline">Customer type is not valid</span> 
+															</span>
+														</div>
+													</div>
+													
+													<div class="form-group">
+													<span class="lbl col-sm-2"> </span>
+													<div class="col-sm-5">
+														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="addCustomerType(admin)" data-ng-disabled="customertypeForm.$invalid">
+															Add Customer Type
+														</button>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+										</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+</div>

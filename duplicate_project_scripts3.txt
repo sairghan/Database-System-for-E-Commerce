@@ -1,0 +1,191 @@
+					Application: Online Grocery Store
+
+Login: {userid, Password, Type}- [customer_individual, customer_business, region_manager,Employee(employee_storemanager, employee_salesperson), Admin]
+	Admin: {-----}
+
+@Relationaccess can be done by: userid,Type(Using type as corresponding relation name)
+
+@At the time of signup and login: Type will be selected
+
+1. Customers: {userid,  addressID, ccID}
+
+	customer_individual: {userid, custname, age,  sex, phnumber, maritalstatus, Income,}- profile creation
+	customer_business: {userid, BusinessName, BusinessType, phnumber, annualIncome}
+	creditcard: {ccID, cctype, ccholdername, ccnumber, cvv, expiry date}
+	
+2. products:{ productid, productName, size, Inventory amount, price, productstatus}- @expiration
+ 	productclassification: { productName, productsType, description, calorie, itc, folate, potassium, fiber}	
+	
+3.Orderitem: { orderid, orderitemid, productid, quantity}	&total  - In queries
+	Orders: {orderid, userid, dateordered}	
+
+4. Transaction - {TransactionID, orderid, userid(salespersonhandledby), status, approvedate}
+
+5. Employee - {userid, emp_name, addressID, e-mail, @jobID, phnum, storeID, ---}  #Ismanager
+
+6. Store: {storeID, addressID, number of salespersons, region name}
+	
+7. region_manager: {userid, region name, region_man_name, addressID, e-mail, jobID, phnum,---}
+
+	jobdetails: {jobID, job title, salary}
+	address: {addressID, street, city, state, country, zipcode}
+	
+-----------------___________________---------------------
+
+
+CREATE SCHEMA 'grocery store';
+
+CREATE TABLE 'login' (
+'userid' int(11) NOT NULL ,
+'password' varchar(200) NOT NULL,
+'Type' varchar(200) NOT NULL,
+PRIMARY KEY ('userid')
+);
+
+CREATE TABLE 'customers' (
+'userid' int(11) NOT NULL,
+'addressID' int(11) NOT NULL,
+'ccID' int(11) default 0,
+PRIMARY KEY ('userid'),
+FOREIGNKEY ('userid') REFERENCES login('userid'),
+FOREIGNKEY ('ccid') REFERENCES creditcard('ccid'),
+FOREIGNKEY ('addressID') REFERENCES address('addressID')
+);
+
+CREATE TABLE 'customer_individual' (
+'userid' int(11) NOT NULL,
+'custname' varchar(200) NOT NULL,
+'age' int(11) NOT NULL,  
+'sex' varchar(200) NOT NULL, 
+'phnumber' int(15) NOT NULL, 
+'maritalstatus' varchar(200) NOT NULL, 
+'Income' int(11) NOT NULL,
+PRIMARY KEY ('userid'),
+FOREIGNKEY ('userid') REFERENCES login('userid'),
+);
+
+CREATE TABLE 'customer_business' (
+'userid' int(11) NOT NULL, 
+'BusinessName' varchar(200) NOT NULL, 
+'BusinessType' varchar(200) NOT NULL, 
+'phnumber' int(11) NOT NULL, 
+'annualIncome'  int(11) NOT NULL,
+PRIMARY KEY ('userid'),
+FOREIGNKEY ('userid') REFERENCES login('userid'),
+);
+
+CREATE TABLE 'creditcard' (
+'ccID'  int(11)  default 0, 
+'cctype' varchar(200)  default 0, 
+'ccholdername' varchar(200)  default 0, 
+'ccnumber'  int(11) default 0,
+'cvv'  int(11) default 0, 
+'expiry date' data 00/00/0000
+PRIMARY KEY ('ccid'),
+);
+
+CREATE TABLE 'products' (
+'productid'  int(11) NOT NULL, 
+'productName' varchar(200) NOT NULL, 
+'size' varchar(200) NOT NULL, 
+'Inventory amount'  int(11) NOT NULL, 
+'price'  int(11) NOT NULL,
+'productstatus' varchar(200) NOT NULL
+PRIMARY KEY ('productid'),
+FOREIGNKEY ('productname') REFERENCES productsclassification('productname'),
+); 
+
+CREATE TABLE 'productclassification' (
+'productName' varchar(200) NOT NULL, 
+'productsType' varchar(200) NOT NULL, 
+'description' varchar(200) NOT NULL, 
+'calorie' int(11)  default 0, 
+'itc' int(11)  default 0, 
+'folate' int(11)  default 0, 
+'potassium' int(11)  default 0, 
+'fiber' int(11)  default 0
+PRIMARY KEY ('productname'),
+);
+
+CREATE TABLE 'Orderitem' (
+'orderitemid' int(11) NOT NULL,
+'orderid' int(11) NOT NULL,  
+'productid' int(11) NOT NULL, 
+'quantity' int(11) NOT NULL
+PRIMARY KEY ('orderitemid', 'orderid')
+);
+
+CREATE TABLE 'Orders' (
+'orderid' int(11) NOT NULL, 
+'userid' int(11) NOT NULL, 
+'dateordered' date NOT NULL
+PRIMARY KEY ('orderid'),
+FOREIGNKEY ('userid') REFERENCES customer('userid')
+);
+
+CREATE TABLE 'transaction'(
+'TransactionID' int(11) NOT NULL, 
+'orderid' int(11) NOT NULL, 
+'userid' int(11) NOT NULL, 
+'status' varchar(200) NOT NULL, 
+'approvedate' date NOT NULL,
+PRIMARY KEY ('transactionid'),
+FOREIGNKEY ('orderid') REFERENCES orders('orderid'),
+FOREIGNKEY ('userid') REFERENCES employee('userid')
+);
+
+CREATE TABLE 'employee' (
+'userid' int(11) NOT NULL, 
+'empname varchar(200) NOT NULL, 
+'addressId' int(11) NOT NULL, 
+'e-mail' varchar(200) NOT NULL, 
+'jobID' int(11) NOT NULL, 
+'phnum' int(15) NOT NULL, 
+'storeID' int(11) NOT NULL,
+PRIMARY KEY ('userid'),
+FOREIGNKEY ('userid') REFERENCES login('userid'),
+FOREIGNKEY ('jobid') REFERENCES jobdetails('jobid'),
+FOREIGNKEY ('addressid') REFERENCES address('addressid'),
+FOREIGNKEY ('storeid') REFERENCES store('storeid')
+);
+
+CREATE TABLE 'store' (
+'storeID' int(11) NOT NULL, 
+'addressID' int(11) NOT NULL, 
+'salespersons_num' int(11) NOT NULL default 0,  
+'region name' varchar(200) NOT NULL,
+PRIMARY KEY ('storeid'),
+FOREIGNKEY ('region_name') REFERENCES region_manager('region_name'),
+FOREIGNKEY ('addressid') REFERENCES address('addressid'),
+);
+
+CREATE TABLE 'region_manager' (
+'userid' int(11) NOT NULL, 
+'region name' varchar(200) NOT NULL, 
+'reg_man_name' varchar(200) NOT NULL, 
+'addressID' int(11) NOT NULL, 
+'e-mail' varchar(200) NOT NULL, 
+'jobID' int(11) NOT NULL, 
+'phnum'  int(15) NOT NULL
+PRIMARY KEY ('userid'),
+FOREIGNKEY ('userid') REFERENCES login('userid'),
+FOREIGNKEY ('addressid') REFERENCES address('addressid'),
+FOREIGNKEY ('jobid') REFERENCES jobdetails('jobid'),
+);
+
+CREATE TABLE 'jobdetails' (
+'jobID'  int(15) NOT NULL, 
+'job title' varchar(200) NOT NULL, 
+'salary' int(15) NOT NULL,
+PRIMARY KEY ('jobid'),
+);
+
+CREATE TABLE 'address' (
+'addressID' int(15) NOT NULL, 
+'street' varchar(200) NOT NULL, 
+'city' varchar(200) NOT NULL, 
+'state' varchar(200) NOT NULL, 
+'country' varchar(200) NOT NULL, 
+'zipcode' int(15) NOT NULL,
+PRIMARY KEY ('addressid'),
+);

@@ -1,0 +1,12 @@
+<table class="table table-striped">
+    <tr>
+		<th> Product ID </th>
+		<th> Product Name </th>
+		<th> Quantity Purchased </th>
+	</tr>
+	<tr ng-repeat="o in order | orderBy:'dateordered'" id="{{o.productid}}">
+			<td>{{o.productid}}</td>
+			<td>{{o.productname}}</td>		
+			<td>{{o.quantity}}</td>
+	</tr>
+</table>
